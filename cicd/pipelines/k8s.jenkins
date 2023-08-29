@@ -2,17 +2,33 @@
 
 def label = "k8sagent-e2e"
 
-
 podTemplate(label: label,
         containers: [
                 containerTemplate(name: 'alpine', image: 'alpine:3.11', ttyEnabled: true, command: 'cat'),
         ],
-        ) {
+) {
     node(label) {
-        stage('Run shell and generate file') {
-            container('alpine') {
-                sh 'echo "hello world" > file.txt'
-                sleep 8000
+        properties([
+            parameters([
+                choice(name: 'BUILD_STAGE', choices: ['stage1', 'stage2'], description: 'Select the stage to build')
+            ])
+        ])
+        
+        def selectedStage = params.BUILD_STAGE ?: 'none'
+
+        stage('Build Stage 1') {
+            if (selectedStage == 'stage1') {
+                container('alpine') {
+                    sh 'echo "building stage1" > file.txt'
+                }
+            }
+        }
+
+        stage('Build Stage 2') {
+            if (selectedStage == 'stage2') {
+                container('alpine') {
+                    sh 'echo "building stage2" > file.txt'
+                }
             }
         }
     }
