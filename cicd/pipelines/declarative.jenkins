@@ -4,7 +4,7 @@ pipeline {
         stages {  
             stage ("first") {
                 tools {
-                   jdk "jdk-1.8.101"
+                   jdk "jdk_11_latest"
                 }
                 steps {
                     sh 'java -version'
@@ -12,7 +12,7 @@ pipeline {
             }
             stage("second"){
                 tools {
-                   jdk "jdk-1.8.152"
+                   jdk "jdk_11_latest"
                 }
                 steps{
                     sh 'java -version'
