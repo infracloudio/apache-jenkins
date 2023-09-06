@@ -7,7 +7,7 @@ pipeline {
                    jdk "jdk_11_latest"
                 }
                 steps {
-                    sh 'java -version'
+                    sh '$JAVA_HOME_11 -version'
                 }
             }
             stage("second"){
@@ -15,7 +15,7 @@ pipeline {
                    jdk "jdk_11_latest"
                 }
                 steps{
-                    sh 'java -version'
+                    sh '$JAVA_HOME_17 -version'
                 }
             }
        }
