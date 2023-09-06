@@ -2,7 +2,7 @@ pipeline {
         agent{
           kubernetes {
       label 'cassandra'
-      defaultContainer 'jnlp'
+      defaultContainer 'alpine'
       yaml '''
         apiVersion: v1
         kind: Pod
@@ -12,7 +12,7 @@ pipeline {
         spec:
           containers:
           - name: alpine
-            image: alpine:3.11
+            image: richamishra006/apache-k8s-agent:v5
             command:
             - cat
             tty: true
