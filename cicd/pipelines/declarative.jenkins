@@ -19,14 +19,14 @@ pipeline {
               - /usr/local/bin/jenkins-agent
             volumeMounts:
             - name: repo-pvc
-              mountPath: /home/jenkins/agent/workspace/k8s-e2e       
+              mountPath: /var/lib/jenkins/workspace/k8s-e2e@script       
             tty: true
             securityContext:
               privileged: true
           volumes:
           - name: repo-pvc
             hostPath:
-              path: /home/jenkins/agent/workspace/k8s-e2e
+              path: /var/lib/jenkins/workspace/k8s-e2e@script  
         '''
     }
   }
@@ -34,7 +34,7 @@ pipeline {
         stages {  
             stage("use local repo") {
                 steps{
-                        sh 'cd /home/jenkins/agent/workspace/k8s-e2e && git pull origin master'
+                        sh 'cd /var/lib/jenkins/workspace/k8s-e2e@script && ls'
                         sh 'sleep 1200'
                     }
                 }
