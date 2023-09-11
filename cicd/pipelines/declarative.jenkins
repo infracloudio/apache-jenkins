@@ -39,21 +39,5 @@ pipeline {
                     }
                 }
               
-            stage ("first") {
-                tools {
-                   jdk "jdk_11_latest"
-                }
-                steps {
-                    sh '$JAVA_HOME_11/bin/java -version'
-                }
-            }
-            stage("second"){
-                tools {
-                   jdk "jdk_11_latest"
-                }
-                steps{
-                    sh '$JAVA_HOME_17/bin/java -version'
-                }
-            }
        }
 }
