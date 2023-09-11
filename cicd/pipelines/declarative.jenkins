@@ -19,14 +19,14 @@ pipeline {
               - /usr/local/bin/jenkins-agent
             volumeMounts:
             - name: repo-pvc
-              mountPath: /home/jenkins/agent/workspace/k8s-e2e       
+              mountPath: /shared-repo       
             tty: true
             securityContext:
               privileged: true
           volumes:
           - name: repo-pvc
             hostPath:
-              path: /home/jenkins/agent/workspace/k8s-e2e 
+              path: /var/lib/jenkins/workspace/k8s-e2e@script/9332107fbe4bfe7c1ff022a0fbf5a9e762165a4b9866946d1316d4a2b73d892f
         '''
     }
   }
@@ -34,8 +34,10 @@ pipeline {
         stages {  
             stage("use local repo") {
                 steps{
-                        sh 'cd /home/jenkins/agent/workspace/k8s-e2e'
-                        sh 'ls'
+                        sh 'mkdir -p /shared-repo'
+                        dir('/shared-repo'){
+                           git url: 'https://github.com/infracloudio/apache-jenkins.git', branch: 'master' 
+                        }
                         sh 'sleep 1200'
                     }
                 }
