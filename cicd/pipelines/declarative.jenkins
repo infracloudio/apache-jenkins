@@ -19,7 +19,7 @@ pipeline {
               - /usr/local/bin/jenkins-agent
             volumeMounts:
             - name: repo-pvc
-              mountPath: /tmp       
+              mountPath: /tmp/repo       
             tty: true
             securityContext:
               privileged: true
@@ -34,7 +34,7 @@ pipeline {
         stages {  
             stage("use local repo") {
                 steps{
-                        sh 'cd /tmp && ls'
+                        sh 'cd /tmp/repo && ls'
                         sh 'sleep 1200'
                     }
                 }
