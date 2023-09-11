@@ -16,10 +16,17 @@ pipeline {
             command:
               - /bin/sh 
               - -c
-              - /usr/local/bin/jenkins-agent      
+              - /usr/local/bin/jenkins-agent
+            volumeMounts:
+            - name: repo-pvc
+              mountPath: /tmp/repo       
             tty: true
             securityContext:
               privileged: true
+          volumes:
+          - name: repo-pvc
+            hostPath:
+              path: /home/jenkins/agent/workspace/k8s-e2e
         '''
     }
   }
@@ -27,8 +34,7 @@ pipeline {
         stages {  
             stage("use local repo") {
                 steps{
-                        sh 'mkdir -p /tmp/repo'
-                        sh 'mount --bind /home/jenkins/agent/workspace/k8s-e2e  /tmp/repo'
+                        sh 'cd /tmp/repo && ls'
                         sh 'sleep 1200'
                     }
                 }
