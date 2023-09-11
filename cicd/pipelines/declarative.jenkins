@@ -1,8 +1,8 @@
 pipeline {
-        agent{
-          kubernetes {
+  agent {
+    kubernetes {
       label 'cassandra'
-      defaultContainer 'alpine'
+      defaultContainer 'jnlp'
       yaml '''
         apiVersion: v1
         kind: Pod
@@ -11,16 +11,35 @@ pipeline {
             jenkins: label
         spec:
           containers:
-          - name: alpine
-            image: richamishra006/apache-k8s-agent:v5
+          - name: jnlp
+            image: richamishra006/apache-k8s-agent:v23
             command:
-            - cat
+              - /bin/sh 
+              - -c
+              - /usr/local/bin/jenkins-agent
+            volumeMounts:
+            - name: repo-pvc
+              mountPath: /home/jenkins/agent/workspace/k8s-e2e       
             tty: true
+            securityContext:
+              privileged: true
+          volumes:
+          - name: repo-pvc
+            hostPath:
+              path: /home/jenkins/agent/workspace/k8s-e2e
         '''
     }
-}
+  }
 
         stages {  
+            stage("use local repo") {
+                steps{
+                    container(name: 'jenkins', shell: '/bin/sh') {
+                        sh 'cd /home/jenkins/agent/workspace/k8s-e2e && git pull origin master'
+                    }
+                }
+            }
+              
             stage ("first") {
                 tools {
                    jdk "jdk_11_latest"
