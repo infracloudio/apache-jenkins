@@ -34,11 +34,10 @@ pipeline {
         stages {  
             stage("use local repo") {
                 steps{
-                    container(name: 'jenkins', shell: '/bin/sh') {
                         sh 'cd /home/jenkins/agent/workspace/k8s-e2e && git pull origin master'
+                        sh 'sleep 1200'
                     }
                 }
-            }
               
             stage ("first") {
                 tools {
