@@ -28,7 +28,7 @@ pipeline {
             stage("use local repo") {
                 steps{
                         sh 'mkdir -p /tmp/repo'
-                        sh 'mount --bind /home/jenkins/agent/workspace/k8s-e2e  /tmp/repo
+                        sh 'mount --bind /home/jenkins/agent/workspace/k8s-e2e  /tmp/repo'
                         sh 'sleep 1200'
                     }
                 }
