@@ -26,7 +26,7 @@ pipeline {
           volumes:
           - name: repo-pvc
             hostPath:
-              path: /home/jenkins/agent/workspace/k8s-e2e
+              path: /var/lib/jenkins/workspace/k8s-e2e@script/9332107fbe4bfe7c1ff022a0fbf5a9e762165a4b9866946d1316d4a2b73d892f
         '''
     }
   }
