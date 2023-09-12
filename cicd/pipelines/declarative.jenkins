@@ -24,9 +24,9 @@ pipeline {
             securityContext:
               privileged: true
           volumes:
-          - name: repo-pvc
-            hostPath:
-              path: /home/jenkins/agent/workspace/k8s-e2e
+            persistentVolumeClaim:
+            - claimName: repo-pvc
+              mountPath: /home/jenkins/agent/workspace/k8s-e2e
         '''
     }
   }
