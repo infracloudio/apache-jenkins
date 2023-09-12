@@ -18,15 +18,15 @@ pipeline {
               - -c
               - /usr/local/bin/jenkins-agent
             volumeMounts:
-            - name: repo-pvc
+            - name: data
               mountPath: /tmp/repo       
             tty: true
             securityContext:
               privileged: true
           volumes:
+          - name: data
             persistentVolumeClaim:
-            - claimName: repo-pvc
-              mountPath: /home/jenkins/agent/workspace/k8s-e2e
+              claimName: repo-pvc
         '''
     }
   }
