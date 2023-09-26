@@ -62,25 +62,24 @@ parameters {
     javaVersionsSupported = javaVersionsSupported()
     PIPELINE_SCRIPT_DEBUG = 'true'
   }
-stages {
-  stage('Select Stage') {
-    steps {
-      script {
-        if (params.STAGE_TO_RUN == 'Init') {
-          // Run the Init stage
-          buildInitStage()
-        } else if (params.STAGE_TO_RUN == 'lint') {
-          // Run the lint stage
-          buildLintStage()
-        } else if (params.STAGE_TO_RUN == 'debian') {
-          // Run the debian stage
-          buildDebianStage()
+  stages {
+    stage('Select Stage') {
+      steps {
+        script {
+          if (params.STAGE_TO_RUN == 'Init') {
+            buildInitStage()
+          } else if (params.STAGE_TO_RUN == 'lint') {
+            buildLintStage()
+          } else if (params.STAGE_TO_RUN == 'debian') {
+            buildDebianStage()
+          }
+          // Add similar conditions for other stages
         }
-        // Add similar conditions for other stages
       }
     }
   }
 }
+
 def buildInitStage() {
   stage('Init') {
     steps {
