@@ -83,10 +83,10 @@ def buildInitStage() {
 
 def buildLintStage() {
   stage('lint') {
-    steps {
+    //steps {
       // Your lint stage logic here
       sh 'echo "stage lint"'
-    }
+    //}
   }
 }
 
