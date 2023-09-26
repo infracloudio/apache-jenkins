@@ -1,0 +1,81 @@
+pipeline {
+  agent {
+    kubernetes {
+      label 'cassandra'
+      defaultContainer 'jnlp'
+      yaml '''
+        apiVersion: v1
+        kind: Pod
+        metadata:
+          labels:
+            jenkins: label
+        spec:
+          initContainers:
+            - name: init-docker-socket
+              image: alpine:latest
+              imagePullPolicy: Always
+              command:
+                - sh
+                - -c
+                - chown 1000:1000 /var/run/docker.sock
+              volumeMounts:
+                - name: docker-socket
+                  mountPath: /var/run/docker.sock
+              securityContext:
+                runAsUser: 0
+          containers:
+          - name: jnlp
+            image: richamishra006/apache-k8s-agent:32
+            command:
+              - /bin/sh 
+              - -c
+              - /usr/local/bin/jenkins-agent
+            volumeMounts:
+            - name: docker-socket
+              mountPath: /var/run/docker.sock   
+            tty: true
+            securityContext:
+              privileged: true
+          nodeSelector:
+            gke-node: first
+          volumes:
+          - name: docker-socket
+            hostPath:
+              path: /var/run/docker.sock
+        '''
+    }
+  }
+
+  options {
+    githubProjectProperty('https://github.com/apache/cassandra')
+    parallelsAlwaysFailFast()
+    timestamps()
+  }
+  environment {
+    javaVersionDefault = javaVersionDefault()
+    javaVersionsSupported = javaVersionsSupported()
+    PIPELINE_SCRIPT_DEBUG = 'true'
+  }
+  stages {
+    stage('Init') {
+      steps {
+        container('jnlp') {
+          //cleanWs()
+          script { currentBuild.result='SUCCESS' }
+          sh 'echo "stage init"'
+          }
+      }
+    }
+    stage('Test') {
+     parallel {
+        stage('lint') {
+          steps {
+            //buildJob(".build/docker/check-code.sh", "")
+            sh 'echo "stage lint"'
+          }
+        }
+        stage('debian') {
+          steps {
+            //buildJob(".build/docker/build-debian.sh", "cassandra_*,cassandra-tools_*")
+            sh 'echo "stage debian"'
+          }
