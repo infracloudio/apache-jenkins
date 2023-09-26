@@ -45,7 +45,13 @@ pipeline {
         '''
     }
   }
-
+parameters {
+  choice(
+    choices: ['Init', 'lint', 'debian', 'redhat', 'centos7', 'stress', 'fqltool', 'Summary'],
+    description: 'Select the stage to run',
+    name: 'STAGE_TO_RUN'
+  )
+}
   options {
     githubProjectProperty('https://github.com/apache/cassandra')
     parallelsAlwaysFailFast()
@@ -56,26 +62,57 @@ pipeline {
     javaVersionsSupported = javaVersionsSupported()
     PIPELINE_SCRIPT_DEBUG = 'true'
   }
-  stages {
-    stage('Init') {
-      steps {
-        container('jnlp') {
-          //cleanWs()
-          script { currentBuild.result='SUCCESS' }
-          sh 'echo "stage init"'
-          }
+stages {
+  stage('Select Stage') {
+    steps {
+      script {
+        if (params.STAGE_TO_RUN == 'Init') {
+          // Run the Init stage
+          buildInitStage()
+        } else if (params.STAGE_TO_RUN == 'lint') {
+          // Run the lint stage
+          buildLintStage()
+        } else if (params.STAGE_TO_RUN == 'debian') {
+          // Run the debian stage
+          buildDebianStage()
+        }
+        // Add similar conditions for other stages
       }
     }
-    stage('Test') {
-     parallel {
-        stage('lint') {
-          steps {
-            //buildJob(".build/docker/check-code.sh", "")
-            sh 'echo "stage lint"'
-          }
-        }
-        stage('debian') {
-          steps {
-            //buildJob(".build/docker/build-debian.sh", "cassandra_*,cassandra-tools_*")
-            sh 'echo "stage debian"'
-          }
+  }
+}
+def buildInitStage() {
+  stage('Init') {
+    steps {
+      container('jnlp') {
+        script { currentBuild.result = 'SUCCESS' }
+        sh 'echo "stage init"'
+      }
+    }
+  }
+}
+
+def buildLintStage() {
+  stage('lint') {
+    steps {
+      // Your lint stage logic here
+      sh 'echo "stage lint"'
+    }
+  }
+}
+
+def buildDebianStage() {
+  stage('debian') {
+    steps {
+      // Your debian stage logic here
+      sh 'echo "stage debian"'
+    }
+  }
+}
+
+
+
+
+
+
+
