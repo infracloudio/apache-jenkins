@@ -52,8 +52,7 @@ parameters {
     name: 'STAGE_TO_RUN'
   )
 }
-
- stages {
+stages {
     stage('Select Stage') {
       steps {
         script {
