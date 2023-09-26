@@ -53,8 +53,7 @@ parameters {
   )
 }
 
-
-  stages {
+ stages {
     stage('Select Stage') {
       steps {
         script {
