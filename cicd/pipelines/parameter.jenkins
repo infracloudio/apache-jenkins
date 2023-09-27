@@ -46,9 +46,9 @@ pipeline {
     }
   }
 parameters {
-  choice(
-    choices: ['Init', 'lint', 'debian', 'redhat', 'centos7', 'stress', 'fqltool', 'Summary'],
-    description: 'Select the stage to run',
+  string(
+    //choices: ['Init', 'lint', 'debian', 'redhat', 'centos7', 'stress', 'fqltool', 'Summary'],
+    description: 'Select the stages to run',
     name: 'STAGE_TO_RUN'
   )
 }
@@ -56,19 +56,22 @@ stages {
     stage('Select Stage') {
       steps {
         script {
-          if (params.STAGE_TO_RUN == 'Init') {
-            buildInitStage()
-          } else if (params.STAGE_TO_RUN == 'lint') {
-            buildLintStage()
-          } else if (params.STAGE_TO_RUN == 'debian') {
-            buildDebianStage()
-          }
-          // Add similar conditions for other stages
+           def stagesToRun = params.STAGES_TO_RUN.split(',')
+          stagesToRun.each { stageName ->
+                        if (stageName == 'Init') {
+                            buildInitStage()
+                        } else if (stageName == 'lint') {
+                            buildLintStage()
+                        } else if (stageName == 'debian') {
+                            buildDebianStage()
+                        }
+                        // Add similar conditions for other stages
+                    }
+                }
+            }
         }
-      }
     }
-  }
-}
+          
 
 def buildInitStage() {
   stage('Init') {
