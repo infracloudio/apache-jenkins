@@ -49,7 +49,7 @@ parameters {
   string(
     //choices: ['Init', 'lint', 'debian', 'redhat', 'centos7', 'stress', 'fqltool', 'Summary'],
     description: 'Select the stages to run',
-    name: 'STAGE_TO_RUN'
+    name: 'STAGES_TO_RUN'
   )
 }
 stages {
