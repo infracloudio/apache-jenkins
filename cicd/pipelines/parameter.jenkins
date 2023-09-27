@@ -74,12 +74,12 @@ stages {
 }
 def buildInitStage() {
   stage('Init') {
-    steps {
-      container('jnlp') {
+    //steps {
+      //container('jnlp') {
         script { currentBuild.result = 'SUCCESS' }
         sh 'echo "stage init"'
-      }
-    }
+      //}
+    //}
   }
 }
 
@@ -94,9 +94,9 @@ def buildLintStage() {
 
 def buildDebianStage() {
   stage('debian') {
-    steps {
+    //steps {
       // Your debian stage logic here
       sh 'echo "stage debian"'
-    }
+    //}
   }
 }
