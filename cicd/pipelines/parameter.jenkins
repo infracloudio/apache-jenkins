@@ -71,8 +71,7 @@ stages {
             }
         }
     }
-          
-
+}
 def buildInitStage() {
   stage('Init') {
     steps {
@@ -100,5 +99,4 @@ def buildDebianStage() {
       sh 'echo "stage debian"'
     }
   }
-}
 }
